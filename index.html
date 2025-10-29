@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Athenadataflo — Open-Source AI Analytics Consulting</title>
+  <link rel="icon" href="www/Logo.png" type="image/png">
+  <meta name="description" content="Athenadataflo — we deliver AI analytics MVPs in 30–60 days using R, Shiny, JavaScript, and open-source tooling." />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Athenadataflo — Open Source AI Analytics Consulting">
+  <meta property="og:description" content="We build AI analytics MVPs in 30–60 days using R, Shiny, and open-source tech.">
+  <meta property="og:image" content="/assets/og-image.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+  <!-- Preconnect & preload font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0f172a;          /* slate-900 */
+      --panel: #111827;       /* gray-900 */
+      --card: #111827;
+      --muted: #94a3b8;       /* slate-400 */
+      --text: #e5e7eb;        /* gray-200 */
+      --heading: #f8fafc;     /* slate-50 */
+      --accent: #22d3ee;      /* cyan-400 */
+      --accent-2: #60a5fa;    /* blue-400 */
+      --border: #1f2937;      /* gray-800 */
+      --focus: #f59e0b;       /* amber-500 */
+      --success: #22c55e;
+      --error: #ef4444;
+      --radius: 12px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --shadow-soft: 0 6px 20px rgba(0,0,0,0.25);
+      --maxw: 1200px;
+      --mobile-menu-max: 420px;
+    }
+    * { box-sizing: border-box; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    html,body{ height:100% }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol";
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(34,211,238,0.10), transparent 60%),
+        radial-gradient(1000px 500px at 110% 0%, rgba(96,165,250,0.10), transparent 60%),
+        linear-gradient(180deg, #0b1220, #0f172a 30%);
+      color: var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{ color: var(--accent); text-decoration: none }
+    a:hover{ text-decoration: underline }
+    img{ max-width:100%; height:auto; display:block }
+    .container{ width:100%; max-width: var(--maxw); margin:0 auto; padding: 0 20px }
+
+    /* Header */
+    .site-header{
+      position: sticky; top:0; z-index: 60;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,23,42,0.75);
+      backdrop-filter: blur(8px);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      height:64px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none;
+      color: var(--heading);
+    }
+    /* Inline SVG brand logo wrapper */
+    .brand-logo {
+      width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center;
+      border-radius:8px; background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: var(--shadow-soft);
+      flex-shrink:0;
+    }
+    .brand-name{
+      color: var(--heading); font-weight:700; letter-spacing:0.2px;
+    }
+    .nav-links{
+      display:flex; align-items:center; gap:20px;
+    }
+    .nav-links a{
+      color: var(--text); text-decoration:none; font-weight:500;
+      padding:8px 10px; border-radius:8px;
+      transition: background 180ms ease, transform 160ms ease, color 160ms ease;
+    }
+    .nav-links a:hover{
+      background: rgba(96,165,250,0.12);
+      transform: translateY(-2px);
+    }
+    .nav-links a[aria-current="page"]{
+      background: rgba(96,165,250,0.12);
+      color: #eaf2ff;
+      outline: 1px solid rgba(96,165,250,0.25);
+    }
+    .cta{
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:#001018; font-weight:700; border:0;
+      padding:10px 14px; border-radius:10px; cursor:pointer;
+      box-shadow: var(--shadow-soft);
+    }
+    .cta:focus{ outline: 3px solid var(--focus); outline-offset:2px }
+    .menu-btn{
+      display:none;
+      align-items:center; gap:8px;
+      padding:8px 10px; border-radius:8px; border:1px solid var(--border);
+      background: transparent; color: var(--text); cursor: pointer;
+    }
+
+    /* Hero/About Intro */
+    .hero{
+      padding: 56px 0 10px;
+    }
+    .hero-grid{
+      display:grid; grid-template-columns: 1.3fr 1fr; gap:30px; align-items:center;
+    }
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:13px; color: var(--muted);
+      border:1px solid var(--border); border-radius: 999px;
+      padding:6px 10px; background: rgba(17,24,39,0.6);
+    }
+    .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background: var(--accent) }
+    h1{
+      margin:12px 0 10px; font-size: clamp(28px, 4vw, 44px);
+      line-height:1.15; color: var(--heading);
+      letter-spacing: -0.02em;
+    }
+    .sub{
+      color: #cbd5e1; font-size: clamp(16px, 2vw, 18px);
+      max-width: 70ch;
+    }
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding:20px; box-shadow: var(--shadow);
+    }
+    .stat-grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; margin-top:10px;
+    }
+    .stat{
+      background: rgba(2,6,23,0.35);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding:14px;
+    }
+    .stat h3{ margin:0; color: var(--heading); font-size:20px }
+    .stat p{ margin:6px 0 0; color: var(--muted); font-size:14px }
+
+    /* Capabilities */
+    .section{ padding: 22px 0 }
+    .section h2{
+      font-size: clamp(22px, 3vw, 28px);
+      color: var(--heading); margin:0 0 6px;
+    }
+    .lead{ color:#cbd5e1; margin:0 0 14px }
+    .cap-grid{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:18px;
+    }
+    .cap{
+      background: rgba(2,6,23,0.35);
+      border:1px solid var(--border);
+      border-radius:12px; padding:16px;
+      transition: transform 220ms ease, box-shadow 220ms ease;
+    }
+    .cap:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.32) }
+    .cap h3{ margin:0 0 6px; font-size:18px; color: var(--heading) }
+    .cap p{ margin:0; color: var(--muted); font-size:14px }
+
+    /* Process */
+    .process{
+      display:grid; grid-template-columns: repeat(4, 1fr); gap:16px;
+    }
+    .step{
+      background: linear-gradient(180deg, rgba(96,165,250,0.08), rgba(34,211,238,0.06));
+      border:1px solid rgba(96,165,250,0.25);
+      border-radius:12px; padding:16px;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+    .step:hover{ transform: translateY(-6px); box-shadow: 0 16px 36px rgba(0,0,0,0.32) }
+    .kicker{ color: var(--accent); font-weight:700; font-size:13px; margin-bottom:6px }
+    .step h4{ margin:0 0 6px; color: var(--heading) }
+    .step p{ margin:0; color: var(--text); font-size:14px }
+
+    /* Team */
+    .team-grid{
+      display:grid; grid-template-columns: repeat(2, 1fr); gap:18px;
+    }
+    .member{
+      background: rgba(2,6,23,0.35);
+      border:1px solid var(--border);
+      border-radius:12px; padding:16px; display:flex; gap:12px;
+      align-items: center;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .member:hover{ transform: translateY(-6px); box-shadow: 0 16px 36px rgba(0,0,0,0.32) }
+    .avatar{
+      width:56px; height:56px; border-radius:50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: var(--shadow-soft);
+      flex-shrink:0; overflow:hidden;
+      display:inline-grid; place-items:center; color:#001018; font-weight:700;
+    }
+    .avatar img{ width:56px; height:56px; object-fit:cover; display:block; border-radius:50% }
+    .member h5{ margin:0; color: var(--heading) }
+    .member p{ margin:2px 0 0; color: var(--muted); font-size:14px }
+
+    /* Values */
+    .values{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap:18px;
+    }
+    .value{
+      background: rgba(2,6,23,0.35);
+      border:1px solid var(--border);
+      border-radius:12px; padding:16px;
+    }
+    .value h4{ margin:0 0 6px; color: var(--heading) }
+    .value p{ margin:0; color: var(--muted); font-size:14px }
+
+    /* CTA band */
+    .cta-band{
+      margin: 16px 0 32px;
+      background: linear-gradient(135deg, rgba(34,211,238,0.12), rgba(96,165,250,0.12));
+      border:1px solid rgba(148,163,184,0.25);
+      padding:18px; border-radius:14px; text-align:center;
+    }
+    .cta-band h3{ margin:0 0 6px; color: var(--heading) }
+    .cta-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap }
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 14px; border-radius:10px; border:1px solid var(--border);
+      background:#0b1220; color:#e2e8f0; cursor:pointer; font-weight:600;
+      text-decoration:none;
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:#001018; border:0;
+    }
+    .btn:focus{ outline:3px solid var(--focus); outline-offset:2px }
+
+    /* Footer */
+    .site-footer{
+      border-top:1px solid var(--border);
+      background: rgba(2,6,23,0.5);
+      padding: 18px 0;
+      color: var(--muted);
+    }
+    .foot-grid{
+      display:grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap:20px;
+    }
+    .foot-title{ color: var(--text); margin:0 0 8px; font-weight:700 }
+    .foot-links{ display:grid; gap:6px }
+    .foot-links a{ color: var(--muted) }
+
+    .legal{ font-size:13px; color:#94a3b8 }
+
+    /* Utilities */
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;
+    }
+    .badge{
+      display:inline-flex; gap:6px; align-items:center;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(148,163,184,0.25);
+      color:#cbd5e1; font-size:13px;
+      background: rgba(15,23,42,0.6);
+    }
+
+    /* Scroll to Top */
+    #scrollTop {
+      position: fixed; bottom: 22px; right: 20px;
+      padding: 10px 12px; border-radius: 12px;
+      background: var(--accent); color:#001018; font-weight:700;
+      border: none; cursor: pointer; display: none;
+      box-shadow: var(--shadow-soft);
+      z-index:70;
+    }
+    #scrollTop.show { display: inline-flex; align-items:center; justify-content:center; }
+
+    /* mobile menu (animated) */
+    #mobile-menu {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 320ms ease, opacity 260ms ease;
+      opacity: 0;
+    }
+    #mobile-menu.open {
+      max-height: var(--mobile-menu-max);
+      opacity: 1;
+    }
+    #mobile-menu nav a { display:block; padding:8px 0; }
+
+    /* section anchors: smooth */
+    html { scroll-behavior: smooth; }
+
+    /* Focus states for keyboard users */
+    a:focus, button:focus { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+    /* Responsive */
+    @media (max-width: 1024px){
+      .hero-grid{ grid-template-columns: 1fr }
+      .cap-grid{ grid-template-columns: repeat(2, 1fr) }
+      .process{ grid-template-columns: repeat(2, 1fr) }
+      .team-grid{ grid-template-columns: repeat(2, 1fr) }
+      .values{ grid-template-columns: repeat(2, 1fr) }
+      .foot-grid{ grid-template-columns: 1fr 1fr }
+    }
+    @media (max-width: 640px){
+      .nav-links{ display:none }
+      .menu-btn{ display:inline-flex }
+      .cap-grid, .process, .team-grid, .values, .foot-grid{ grid-template-columns: 1fr }
+      .stat-grid{ grid-template-columns: 1fr 1fr }
+      .brand-name{ display:none } /* saves space */
+      .cta { display:none } /* move CTA into mobile menu */
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container nav" aria-label="Main navigation">
+      <a class="brand" href="/" aria-label="Go to homepage">
+        <span class="brand-logo" aria-hidden="true" title="Athenadataflo">
+          <img src="www/Logo.png" alt="Athenadataflo logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="24" height="24" rx="5" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#22d3ee"/>
+                <stop offset="1" stop-color="#60a5fa"/>
+              </linearGradient>
+            </defs>
+            <path d="M6 12c1.5-4 6-4 8 0" stroke="#001018" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="7" cy="9" r="0.9" fill="#001018"/>
+            <circle cx="13" cy="9" r="0.9" fill="#001018"/>
+          </svg>
+        </span>
+        <span class="brand-name">Athenadataflo</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#about" aria-current="page">About</a>
+        <a href="#capabilities">Capabilities</a>
+		<a href="#products">Products</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+        <a class="cta" href="#contact" id="request-demo-cta">Request a Demo</a>
+      </nav>
+
+      <button class="menu-btn" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu" id="menuBtn">
+        ☰ Menu
+      </button>
+    </div>
+
+    <!-- Mobile menu with animated open/close -->
+    <div id="mobile-menu" class="container" aria-hidden="true">
+      <nav aria-label="Mobile">
+        <a href="#about">About</a>
+        <a href="#capabilities">Products</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+        <a class="cta" href="#contact" style="display:inline-block; text-align:center; margin-top:8px">Request a Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content" tabindex="-1">
+    <section id="about" class="hero" aria-labelledby="about-heading">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow"><span class="dot" aria-hidden="true"></span> About us</span>
+          <h1 id="about-heading">AI Products, delivered fast with open-source</h1>
+          <p class="sub">
+            We design and ship enterprise-grade analytics applications using R, Shiny, JavaScript, and CSS.
+            Our MVPs launch in 30–60 days, then iterate to scale securely across your organization.
+          </p>
+          <div class="badge" style="margin-top:12px" aria-hidden="true">
+            <span>⚡</span> MVPs in 30–60 days
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Highlights">
+          <div class="stat-grid">
+            <div class="stat" role="group" aria-label="Time to MVP">
+              <h3>30–60 days</h3>
+              <p>Typical MVP timeline</p>
+            </div>
+            <div class="stat" role="group" aria-label="Open-source">
+              <h3>Open-source</h3>
+              <p>R, Shiny, JS, CSS</p>
+            </div>
+            <div class="stat" role="group" aria-label="Quality">
+              <h3>Enterprise</h3>
+              <p>Secure and scalable</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="vision" class="section" aria-labelledby="vision-heading">
+      <div class="container">
+        <h2 id="vision-heading">Vision</h2>
+        <p class="lead">
+          Empower decision-makers with rapid, powerful analytics—free from vendor lock-in. 
+		  Our open-source approach keeps costs low, flexibility high, and innovation continuous
+        </p>
+      </div>
+    </section>
+
+    <section id="capabilities" class="section" aria-labelledby="capabilities-heading">
+      <div class="container">
+        <h2 id="capabilities-heading">Capabilities</h2>
+        <p class="lead">From data engineering to UI polish, we deliver end-to-end analytics apps.</p>
+        <div class="cap-grid" role="list">
+          <div class="cap" role="listitem">
+            <h3>R/Shiny App Development</h3>
+            <p>Interactive apps, modular architecture, unit tests, and production deployment patterns.</p>
+          </div>
+          <div class="cap" role="listitem">
+            <h3>AI Integration</h3>
+            <p>Custom AI models,AI based insights generation</p>
+          </div>
+          <div class="cap" role="listitem">
+            <h3>Data Engineering & MLOps</h3>
+            <p>Pipelines, connectors, and modeling for analytics-ready data.</p>
+          </div>
+          <!--div class="cap" role="listitem">
+            <h3>MLOps Integration</h3>
+            <p>Versioning, CI/CD, model monitoring, and reproducibility.</p>
+          </div-->
+          <!--div class="cap" role="listitem">
+            <h3>Security & Governance</h3>
+            <p>RBAC, auditability, privacy by design, and compliance support.</p>
+          </div-->
+          <!--div class="cap" role="listitem">
+            <h3>Cloud Deployments</h3>
+            <p>Containerized apps on major clouds with observability and scaling.</p>
+          </div-->
+        </div>
+      </div>
+    </section>
+	
+	<section id="how-we-deliver" class="section" aria-labelledby="deliver-heading">
+      <div class="container">
+        <h2 id="deliver-heading">How we deliver</h2>
+        <p class="lead">A pragmatic, iterative approach that reduces risk and accelerates outcomes.</p>
+        <div class="process" role="list">
+          <div class="step" role="listitem">
+            <div class="kicker">01 • Discover</div>
+            <h4>Scope and success metrics</h4>
+            <p>Collaborative workshops to define users, data, and the MVP boundary.</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="kicker">02 • Build</div>
+            <h4>MVP in 30–60 days</h4>
+            <p>Rapid iterations with weekly demos and validated learning.</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="kicker">03 • Iterate</div>
+            <h4>Feature expansion</h4>
+            <p>Refine usability, performance, and accuracy based on feedback.</p>
+          </div>
+          <div class="step" role="listitem">
+            <div class="kicker">04 • Scale</div>
+            <h4>Harden and roll out</h4>
+            <p>Security, governance, and deployment patterns for enterprise scale.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+	
+	<section id="products" class="section" aria-labelledby="products-heading">
+     <div class="container">
+     <h2 id="products-heading">Our Products</h2>
+     <p class="lead">Ready-to-use AI analytics tools built with R Shiny and open-source tech.</p>
+     <div class="cap-grid" role="list">
+      <div class="cap" role="listitem">
+        <h3>AI powered BI dashboard</h3>
+		<img src="www/Co-pilot.png",alt="BI Co-Pilot" loading="lazy" width="400">
+        <p>Conversational analytics BI dashboarding tool that lets business users query data in plain English.</p>
+      </div>
+      <div class="cap" role="listitem">
+        <h3>Incentive Compensation</h3>
+		<img src="www/Target Setting.png",alt="BI Co-Pilot" loading="lazy" width="400">
+        <p>A complete digital tool which helps in setting up the targets for the sales team which empowered a pharma company.</p>
+      </div>
+      <div class="cap" role="listitem">
+        <h3>Retail Superstore Dashboard</h3>
+		<img src="www/Retail Dashboard.png",alt="BI Co-Pilot" loading="lazy" width="400">
+        <p>A powerful retail analytics solution which centralizes data, performs RFM, market basket and recommends analytical improvements.</p>
+      </div>
+     </div>
+     </div>
+    </section>
+
+    <section id="team" class="section" aria-labelledby="team-heading">
+      <div class="container">
+        <h2 id="team-heading">Leadership team</h2>
+        <p class="lead">A cross-functional team spanning data science, engineering, and product.</p>
+        <div class="team-grid" role="list">
+          <!-- Rajaraaman -->
+          <article class="member" role="listitem" aria-label="Rajaraaman J S, Founder">
+            <div class="avatar" aria-hidden="false">
+              <!-- Using an Unsplash portrait as an example; replace with /assets/raj.jpg if you host locally -->
+              <img src="www/Raja.jpg",alt="Rajaraaman J S" loading="lazy" width="56" height="56">
+            </div>
+            <div>
+              <h5>Rajaraaman J S</h5>
+              <p>Co-Founder & Head of Data Science — Shiny Development,Machine learning, AI Integration </p>
+            </div>
+          </article>
+
+          <!-- Swetha -->
+          <article class="member" role="listitem" aria-label="Swetha Venkatakrishnan, Head of Data Science">
+            <div class="avatar">
+              <img src="www/swetha.jpg",alt="Swetha Venkatakrishnan" loading="lazy" width="56" height="56">
+            </div>
+            <div>
+              <h5>Swetha Venkatakrishnan</h5>
+              <p>Co-Founder & Head of Product Development — Product Strategy, Product Testing and Support</p>
+            </div>
+          </article>
+
+          <!-- Shyam -->
+          <!--article class="member" role="listitem" aria-label="Shyam Sundor, Engineering Lead">
+            <div class="avatar">
+              <img src="www/Raja.jpg",alt="Shyam Sundor" loading="lazy" width="56" height="56">
+            </div>
+            <div>
+              <h5>Shyam Sundor</h5>
+              <p>Engineering Lead — JS Components, Performance, Cloud Deployments</p>
+            </div>
+          </article>-->
+        </div>
+      </div>
+    </section>
+
+    <section id="values" class="section" aria-labelledby="values-heading">
+      <div class="container">
+        <h2 id="values-heading">Our values</h2>
+        <p class="lead">We stay focused on outcomes, transparency, and craftsmanship.</p>
+        <div class="values" role="list">
+          <div class="value" role="listitem">
+            <h4>Speed with substance</h4>
+            <p>Ship quickly without cutting corners on quality, testing, or security.</p>
+          </div>
+          <div class="value" role="listitem">
+            <h4>Open by default</h4>
+            <p>Leverage open-source to maximize flexibility and reduce TCO.</p>
+          </div>
+          <div class="value" role="listitem">
+            <h4>Design for people</h4>
+            <p>Clear UX so non-technical users can act on insights confidently.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band" aria-labelledby="cta-heading">
+      <div class="container">
+        <h3 id="cta-heading">Ready to build your MVP in 30–60 days?</h3>
+        <p class="lead" style="margin:0 0 12px">Tell us about your use case. We’ll respond within one business day.</p>
+        <div class="cta-actions">
+          <a class="btn primary" href="#contact">Request a Demo</a>
+          <a class="btn" href="#products">Explore Products</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Minimal contact anchor (replace with your form endpoint or integration) -->
+    <section id="contact" class="section" aria-labelledby="contact-heading">
+      <div class="container">
+        <h2 id="contact-heading">Contact</h2>
+        <p class="lead">Share your use case and timeline. We’ll get back in one business day.</p>
+
+        <!-- Example lightweight contact form (non-functional placeholder) -->
+        <form name="contact" method="POST" data-netlify="true">
+			<input type="hidden" name="form-name" value="contact">
+			<div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px;">
+			<input name="name" required placeholder="Your name" style="padding:12px; border-radius:10px; border:1px solid var(--border); background:#071024; color:var(--text)">
+			<input name="email" type="email" required placeholder="Email" style="padding:12px; border-radius:10px; border:1px solid var(--border); background:#071024; color:var(--text)">
+			</div>
+			<textarea name="message" required placeholder="Describe your use case" rows="4" style="width:100%; margin-top:10px; padding:12px; border-radius:10px; border:1px solid var(--border); background:#071024; color:var(--text)"></textarea>
+			<div style="margin-top:10px;">
+			<button type="submit" class="btn primary">Send message</button>
+			</div>
+		</form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container foot-grid" aria-label="Footer">
+      <div>
+        <a class="brand" href="/" aria-label="Go to homepage">
+        <span class="brand-logo" aria-hidden="true" title="Athenadataflo">
+          <img src="www/Logo.png" alt="Athenadataflo logo">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="24" height="24" rx="5" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#22d3ee"/>
+                <stop offset="1" stop-color="#60a5fa"/>
+              </linearGradient>
+            </defs>
+            <path d="M6 12c1.5-4 6-4 8 0" stroke="#001018" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="7" cy="9" r="0.9" fill="#001018"/>
+            <circle cx="13" cy="9" r="0.9" fill="#001018"/>
+          </svg>
+        </span>
+        <span class="brand-name">Athenadataflo</span>
+      </a>
+        <p class="legal">We build AI analytics apps with open-source tools and deliver MVPs in 30–60 days.</p>
+      </div>
+
+      <div>
+        <div class="foot-title">Company</div>
+        <div class="foot-links">
+          <a href="#about">About</a>
+          <a href="#products">Products</a>
+          <a href="#blog">Blog</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="foot-title">Resources</div>
+        <div class="foot-links">
+          <a href="/blog/categories/case-studies">Case Studies</a>
+          <a href="/blog/categories/white-papers">White Papers</a>
+          <a href="/blog/categories/open-source">Open-Source Tips</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="foot-title">Legal</div>
+        <div class="foot-links">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="margin-top:12px">
+      <small class="legal">© <span id="year"></span> Athenadataflo. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- Scroll to top button -->
+  <button id="scrollTop" aria-label="Scroll to top" title="Back to top">↑</button>
+
+  <script>
+    // Current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Improved mobile menu toggle with animated max-height
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('open');
+        mobileMenu.setAttribute('aria-hidden', String(!open));
+        menuBtn.setAttribute('aria-expanded', String(open));
+        // For screen readers keep focus state sensible
+        if (open) {
+          // move focus to first link in mobile menu
+          const firstLink = mobileMenu.querySelector('a');
+          if (firstLink) firstLink.focus();
+        } else {
+          menuBtn.focus();
+        }
+      });
+
+      // Close mobile menu on escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+          mobileMenu.classList.remove('open');
+          menuBtn.setAttribute('aria-expanded', 'false');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+          menuBtn.focus();
+        }
+      });
+    }
+
+    // IntersectionObserver used for progressive reveal (preserves prior behavior)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.opacity = '1';
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.cap, .step, .member, .value, .hero-card').forEach(el => {
+      el.style.transform = 'translateY(12px)';
+      el.style.opacity = '0';
+      el.style.transition = 'transform 500ms ease, opacity 500ms ease';
+      observer.observe(el);
+    });
+
+    // Scroll-to-top button behavior
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY || document.documentElement.scrollTop;
+      if (scrolled > 400) scrollTopBtn.classList.add('show');
+      else scrollTopBtn.classList.remove('show');
+    });
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Make demo CTA announce (example of small analytics-friendly UX)
+    document.getElementById('request-demo-cta').addEventListener('click', () => {
+      // Example: you can fire analytics here or open a modal.
+      // This is a non-blocking stub.
+      console.log('Request demo clicked');
+    });
+
+    // Accessible skip-to-content: if URL has #content then focus main
+    window.addEventListener('hashchange', () => {
+      if (location.hash === '#content') {
+        const main = document.getElementById('content');
+        if (main) main.focus();
+      }
+    });
+  </script>
+</body>
+</html>
